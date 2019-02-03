@@ -13,7 +13,7 @@ string _fileName;
 
 int main()
 {
-	cout << "This program will generate an SHA 512 hash for a given file.\nType the name of a file (including extensiond) in this directory OR type the full directory path of a file." << endl;
+	cout << "This program will generate an SHA 512 hash for a given file.\nType the name of a file (including extension) in this directory OR type the full directory path of a file." << endl;
 	cin >> _fileName;
 	cout << endl;
 
