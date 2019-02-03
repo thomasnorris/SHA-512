@@ -6,3 +6,4 @@ using namespace std;
 
 vector<char> ReadFileBytes();
 void Error(string message);
+void PrintToConsole(string message);
