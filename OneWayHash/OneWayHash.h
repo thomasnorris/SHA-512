@@ -4,5 +4,5 @@
 
 using namespace std;
 
-vector<char> ReadFile(string fileName);
-void Error(string string = "An error occurred.");
+vector<char> ReadFileBytes();
+void Error(string message);

@@ -9,19 +9,26 @@
 
 using namespace std;
 
+string _fileName;
+
 int main()
 {
-	vector<char> fileBytes = ReadFile("InputFile.txt");
+	cout << "This program will generate an SHA 512 hash for a given file.\nType the name of a file in this directory OR type the full directory path of a file." << endl;
+	cin >> _fileName;
+	cout << endl;
+
+	vector<char> fileBytes = ReadFileBytes();
 
 	return EXIT_SUCCESS;
 }
 
-vector<char> ReadFile(string fileName)
+vector<char> ReadFileBytes()
 {
-	ifstream file(fileName, ifstream::ate | ifstream::binary);
+	ifstream file(_fileName, ifstream::ate | ifstream::binary);
 
 	if (!file.good())
-		Error("The file was not found.");
+		Error("The file \"" + _fileName + "\" was not found.");
+	cout << "Reading bytes from file \"" << _fileName << "\"" << endl;
 
 	const ifstream::pos_type position = file.tellg();
 	vector<char> bytes(position);
@@ -34,6 +41,7 @@ vector<char> ReadFile(string fileName)
 
 void Error(string message)
 {
-	cout << message;
-	exit(0);
+	cout << message << endl;
+	system("pause");
+	exit(EXIT_FAILURE);
 }
