@@ -5,17 +5,35 @@
 #include <iostream>
 #include "OneWayHash.h"
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
 int main()
 {
-	ReadFile();
+	vector<char> fileBytes = ReadFile("InputFile.txt");
 
 	return EXIT_SUCCESS;
 }
 
-string ReadFile()
+vector<char> ReadFile(string fileName)
 {
-	return "";
+	ifstream file(fileName, ifstream::ate | ifstream::binary);
+
+	if (!file.good())
+		Error("The file was not found.");
+
+	const ifstream::pos_type position = file.tellg();
+	vector<char> bytes(position);
+
+	file.seekg(0, ios::beg);
+	file.read(&bytes[0], position);
+
+	return bytes;
+}
+
+void Error(string message)
+{
+	cout << message;
+	exit(0);
 }
