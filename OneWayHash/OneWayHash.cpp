@@ -13,13 +13,13 @@ string _fileName;
 
 int main()
 {
-	PrintToConsole("This program will generate an SHA 512 hash for a given file.\nType the name of a file (including extension) in this directory OR type the full directory path of a file.");
+	Print("This program will generate an SHA 512 hash for a given file.\nType the name of a file (including extension) in this directory OR type the full directory path of a file.");
 	cin >> _fileName;
-	cout << endl;
+	Print();
 
 	vector<char> fileBytes = ReadFileBytes();
 
-
+	system("pause");
 	return EXIT_SUCCESS;
 }
 
@@ -32,7 +32,7 @@ vector<char> ReadFileBytes()
 
 	try
 	{
-		PrintToConsole("Reading bytes from file \"" + _fileName + "\"");
+		Print("Reading bytes from file \"" + _fileName + "\"");
 		const ifstream::pos_type position = file.tellg();
 		vector<char> bytes(position);
 
@@ -53,12 +53,12 @@ vector<char> ReadFileBytes()
 
 void Error(string message)
 {
-	PrintToConsole(message);
+	Print(message);
 	system("pause");
 	exit(EXIT_FAILURE);
 }
 
-void PrintToConsole(string message)
+void Print(string message)
 {
 	cout << message << endl;
 }
