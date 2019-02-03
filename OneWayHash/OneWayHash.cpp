@@ -3,12 +3,19 @@
 
 #include "pch.h"
 #include <iostream>
+#include "OneWayHash.h"
+#include <fstream>
 
 using namespace std;
 
 int main()
 {
-	cout << "Hello World!\n";
+	ReadFile();
 
 	return EXIT_SUCCESS;
+}
+
+string ReadFile()
+{
+	return "";
 }
