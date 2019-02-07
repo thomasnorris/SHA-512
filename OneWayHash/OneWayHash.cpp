@@ -6,6 +6,7 @@
 #include "OneWayHash.h"
 #include <fstream>
 #include <vector>
+#include <bitset>
 
 using namespace std;
 
@@ -17,13 +18,14 @@ int main()
 	cin >> _fileName;
 	Print();
 
-	vector<char> fileBytes = ReadFileBytes();
+	string message = GetBitMessageFromFile();
+	Print(message);
 
 	system("pause");
 	return EXIT_SUCCESS;
 }
 
-vector<char> ReadFileBytes()
+string GetBitMessageFromFile()
 {
 	ifstream file(_fileName, ifstream::ate | ifstream::binary);
 
@@ -39,7 +41,14 @@ vector<char> ReadFileBytes()
 		file.seekg(0, ios::beg);
 		file.read(&bytes[0], position);
 
-		return bytes;
+		string message;
+		for (auto it = bytes.begin(); it != bytes.end(); ++it)
+		{
+			string val = to_string(*it);
+			message += bitset<8>(stoi(val)).to_string();
+		}
+
+		return message;
 	}
 	catch (exception& ex)
 	{
@@ -48,7 +57,7 @@ vector<char> ReadFileBytes()
 	}
 
 	// All paths must return a value, so return an empty char array here, even though it should never be hit.
-	return vector<char>(0);
+	return "";
 }
 
 void Error(string message)
