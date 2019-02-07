@@ -6,24 +6,31 @@
 #include "OneWayHash.h"
 #include <fstream>
 #include <vector>
+#include <bitset>
+#include "SHA512.h"
 
 using namespace std;
 
-string _fileName;
+// TODO: Remove hardcoded text file name
+string _fileName = "InputFile.txt";
 
 int main()
 {
-	Print("This program will generate an SHA 512 hash for a given file.\nType the name of a file (including extension) in this directory OR type the full directory path of a file.");
+	// TODO: Remove comment 
+	/*PrintToConsole("This program will generate an SHA 512 hash for a given file.\nType the name of a file (including extension) in this directory OR type the full directory path of a file.");
 	cin >> _fileName;
-	Print();
+	PrintToConsole();*/
 
-	vector<char> fileBytes = ReadFileBytes();
+	auto message = GetBitMessageFromFile();
+	PrintToConsole("Bit message generated from file:\n" + message + "\n");
+
+	GenerateHash(message);
 
 	system("pause");
 	return EXIT_SUCCESS;
 }
 
-vector<char> ReadFileBytes()
+string GetBitMessageFromFile()
 {
 	ifstream file(_fileName, ifstream::ate | ifstream::binary);
 
@@ -32,33 +39,40 @@ vector<char> ReadFileBytes()
 
 	try
 	{
-		Print("Reading bytes from file \"" + _fileName + "\"");
+		PrintToConsole("Reading file \"" + _fileName + "\"...");
 		const ifstream::pos_type position = file.tellg();
 		vector<char> bytes(position);
 
 		file.seekg(0, ios::beg);
 		file.read(&bytes[0], position);
 
-		return bytes;
+		string message;
+		for (auto it = bytes.begin(); it != bytes.end(); ++it)
+		{
+			string val = to_string(*it);
+			message += bitset<8>(stoi(val)).to_string();
+		}
+
+		return message;
 	}
 	catch (exception& ex)
 	{
 		const string message = ex.what();
-		Error("An error was thrown reading bytes from the file.\n Error message: " + message);
+		Error("An error occurred reading the file.\n Error message: " + message);
 	}
 
 	// All paths must return a value, so return an empty char array here, even though it should never be hit.
-	return vector<char>(0);
+	return "";
 }
 
 void Error(string message)
 {
-	Print(message);
+	PrintToConsole(message);
 	system("pause");
 	exit(EXIT_FAILURE);
 }
 
-void Print(string message)
+void PrintToConsole(string message)
 {
 	cout << message << endl;
 }

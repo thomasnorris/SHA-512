@@ -4,6 +4,6 @@
 
 using namespace std;
 
-vector<char> ReadFileBytes();
+string GetBitMessageFromFile();
 void Error(string message);
-void Print(string message = "");
+void PrintToConsole(string message = "");
