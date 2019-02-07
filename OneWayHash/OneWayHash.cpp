@@ -7,6 +7,7 @@
 #include <fstream>
 #include <vector>
 #include <bitset>
+#include "SHA512.h"
 
 using namespace std;
 
@@ -14,12 +15,14 @@ string _fileName;
 
 int main()
 {
-	Print("This program will generate an SHA 512 hash for a given file.\nType the name of a file (including extension) in this directory OR type the full directory path of a file.");
+	PrintToConsole("This program will generate an SHA 512 hash for a given file.\nType the name of a file (including extension) in this directory OR type the full directory path of a file.");
 	cin >> _fileName;
-	Print();
+	PrintToConsole();
 
-	string message = GetBitMessageFromFile();
-	Print(message);
+	auto message = GetBitMessageFromFile();
+	PrintToConsole("Bit message generated from file:\n" + message + "\n");
+
+	GenerateHash(message);
 
 	system("pause");
 	return EXIT_SUCCESS;
@@ -34,7 +37,7 @@ string GetBitMessageFromFile()
 
 	try
 	{
-		Print("Reading bytes from file \"" + _fileName + "\"");
+		PrintToConsole("Reading file \"" + _fileName + "\"...");
 		const ifstream::pos_type position = file.tellg();
 		vector<char> bytes(position);
 
@@ -53,7 +56,7 @@ string GetBitMessageFromFile()
 	catch (exception& ex)
 	{
 		const string message = ex.what();
-		Error("An error was thrown reading bytes from the file.\n Error message: " + message);
+		Error("An error occurred reading the file.\n Error message: " + message);
 	}
 
 	// All paths must return a value, so return an empty char array here, even though it should never be hit.
@@ -62,12 +65,12 @@ string GetBitMessageFromFile()
 
 void Error(string message)
 {
-	Print(message);
+	PrintToConsole(message);
 	system("pause");
 	exit(EXIT_FAILURE);
 }
 
-void Print(string message)
+void PrintToConsole(string message)
 {
 	cout << message << endl;
 }

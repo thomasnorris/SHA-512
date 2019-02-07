@@ -6,4 +6,4 @@ using namespace std;
 
 string GetBitMessageFromFile();
 void Error(string message);
-void Print(string message = "");
+void PrintToConsole(string message = "");

@@ -1,5 +1,8 @@
 #ifndef __SHA512_H__
 #define __SHA512_H__
+#include <string>
+
+using namespace std;
 
 const unsigned long long INITIAL_HASH[8] = 
 {
@@ -30,5 +33,7 @@ const unsigned long long CONSTANTS[] =
 	0x28db77f523047d84, 0x32caab7b40c72493, 0x3c9ebe0a15c9bebc, 0x431d67c49c100d4c,
 	0x4cc5d4becb3e42b6, 0x597f299cfc657e2a, 0x5fcb6fab3ad6faec, 0x6c44198c4a475817
 };
+
+void GenerateHash(string message);
 
 #endif
