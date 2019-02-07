@@ -7,13 +7,13 @@ using namespace std;
 
 void GenerateHash(string message)
 {
+	// If the message isn't a multiple of 24, it must be padded
 	auto messageLength = message.length();
 	string paddedMessage;
-	// If the message isn't a multiple of 24, it must be padded
 	if (messageLength % ONE_THOUSAND_TWENTY_FOUR != 0)
 	{
 		auto excessStartIndex = messageLength - (messageLength % 1024);
-		paddedMessage += message.substr(0, excessStartIndex);
+		paddedMessage = message.substr(0, excessStartIndex);
 
 		auto excessBlock = message.substr(excessStartIndex + 1, messageLength);
 		paddedMessage += PadMessageBlock(excessBlock);
@@ -23,6 +23,7 @@ void GenerateHash(string message)
 		paddedMessage += PadMessageBlock(message);
 	}
 
+	// The message is chunked into 1024 bit blocks which are split into 64 bit groups
 	vector<vector<string>> blocks;
 	for (auto i = 0; i < paddedMessage.length() / ONE_THOUSAND_TWENTY_FOUR; ++i)
 	{
