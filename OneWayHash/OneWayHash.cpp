@@ -22,7 +22,6 @@ int main()
 	PrintToConsole();*/
 
 	auto message = GetBitMessageFromFile();
-	PrintToConsole("Bit message generated from file:\n" + message + "\n");
 
 	GenerateHash(message);
 
