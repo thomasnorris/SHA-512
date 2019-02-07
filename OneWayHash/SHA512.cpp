@@ -5,25 +5,30 @@
 
 using namespace std;
 
-string _message;
-
 void GenerateHash(string message)
 {
-	// Chunk and pad the message
+	message = PadMessage(message);
+}
+
+string PadMessage(string message)
+{
 	auto messageLength = message.length();
+	string paddedMessage;
 	if (messageLength > 1024)
 	{
 		// End of the message must be padded to be a multiple of 1024
 		auto excessStartIndex = messageLength - (messageLength % 1024);
-		_message += message.substr(0, excessStartIndex);
+		paddedMessage += message.substr(0, excessStartIndex);
 
 		auto excessBlock = message.substr(excessStartIndex + 1, messageLength);
-		_message += PadMessageBlock(excessBlock);
+		paddedMessage += PadMessageBlock(excessBlock);
 	}
 	else
 	{
-		_message += PadMessageBlock(message);
+		paddedMessage += PadMessageBlock(message);
 	}
+
+	return paddedMessage;
 }
 
 string PadMessageBlock(string block)

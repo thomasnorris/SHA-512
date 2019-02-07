@@ -36,5 +36,6 @@ const unsigned long long CONSTANTS[] =
 
 void GenerateHash(string message);
 string PadMessageBlock(string block);
+string PadMessage(string message);
 
 #endif
