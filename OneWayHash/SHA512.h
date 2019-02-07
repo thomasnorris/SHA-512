@@ -34,8 +34,12 @@ const unsigned long long CONSTANTS[] =
 	0x4cc5d4becb3e42b6, 0x597f299cfc657e2a, 0x5fcb6fab3ad6faec, 0x6c44198c4a475817
 };
 
+const int ONE_THOUSAND_TWENTY_FOUR = 1024;
+const int ONE_HUNDRED_TWENTY_EIGHT = 128;
+const int SIXTY_FOUR = 64;
+const int EIGHT = 8;
+
 void GenerateHash(string message);
 string PadMessageBlock(string block);
-string PadMessage(string message);
 
 #endif

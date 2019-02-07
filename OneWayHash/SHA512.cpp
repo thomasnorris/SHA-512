@@ -7,16 +7,11 @@ using namespace std;
 
 void GenerateHash(string message)
 {
-	message = PadMessage(message);
-}
-
-string PadMessage(string message)
-{
 	auto messageLength = message.length();
 	string paddedMessage;
-	if (messageLength > 1024)
+	// If the message isn't a multiple of 24, it must be padded
+	if (messageLength % ONE_THOUSAND_TWENTY_FOUR != 0)
 	{
-		// End of the message must be padded to be a multiple of 1024
 		auto excessStartIndex = messageLength - (messageLength % 1024);
 		paddedMessage += message.substr(0, excessStartIndex);
 
@@ -28,11 +23,29 @@ string PadMessage(string message)
 		paddedMessage += PadMessageBlock(message);
 	}
 
-	return paddedMessage;
+	vector<vector<string>> blocks;
+	for (auto i = 0; i < paddedMessage.length() / ONE_THOUSAND_TWENTY_FOUR; ++i)
+	{
+		int startIndex;
+
+		i == 0 ? startIndex = 0 : startIndex = i * ONE_THOUSAND_TWENTY_FOUR;
+		string block = paddedMessage.substr(startIndex, ONE_THOUSAND_TWENTY_FOUR);
+		vector<string> groups;
+
+		for (auto j = 0; j < EIGHT; j++)
+		{
+			j == 0 ? startIndex = 0 : startIndex = j * SIXTY_FOUR;
+			string group = block.substr(startIndex, SIXTY_FOUR);
+			groups.push_back(group);
+		}
+
+		blocks.push_back(groups);
+	}
 }
 
 string PadMessageBlock(string block)
 {
+	// Variable names come from the SHA-512 documentation and pseudo-code
 	int l = block.length();
 	int k = 896 - (l + 1);
 
@@ -40,9 +53,9 @@ string PadMessageBlock(string block)
 	for (auto i = 0; i < k; ++i)
 		block += "0";
 
-	auto lBinary = bitset<8>(l).to_string();
+	auto lBinary = bitset<EIGHT>(l).to_string();
 
-	for (auto i = 0; i < 128 - lBinary.length(); ++i)
+	for (auto i = 0; i < ONE_HUNDRED_TWENTY_EIGHT - lBinary.length(); ++i)
 		block += "0";
 
 	block += lBinary;
