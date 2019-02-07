@@ -11,13 +11,15 @@
 
 using namespace std;
 
-string _fileName;
+// TODO: Remove hardcoded text file name
+string _fileName = "InputFile.txt";
 
 int main()
 {
-	PrintToConsole("This program will generate an SHA 512 hash for a given file.\nType the name of a file (including extension) in this directory OR type the full directory path of a file.");
+	// TODO: Remove comment 
+	/*PrintToConsole("This program will generate an SHA 512 hash for a given file.\nType the name of a file (including extension) in this directory OR type the full directory path of a file.");
 	cin >> _fileName;
-	PrintToConsole();
+	PrintToConsole();*/
 
 	auto message = GetBitMessageFromFile();
 	PrintToConsole("Bit message generated from file:\n" + message + "\n");
