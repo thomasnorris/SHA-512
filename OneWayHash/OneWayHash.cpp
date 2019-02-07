@@ -11,7 +11,7 @@
 
 using namespace std;
 
-// TODO: Remove hardcoded text file name
+// TODO: Remove hardcoded text file name, probably can be changed to a local variable 
 string _fileName = "InputFile.txt";
 
 int main()
