@@ -154,6 +154,7 @@
     <ClInclude Include="OneWayHash.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SHA512.h" />
+    <ClInclude Include="SHAMessage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="OneWayHash.cpp" />
@@ -164,6 +165,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SHA512.cpp" />
+    <ClCompile Include="SHAMessage.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
