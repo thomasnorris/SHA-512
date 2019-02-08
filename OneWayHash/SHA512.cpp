@@ -29,8 +29,10 @@ void GenerateHash(string message)
 	// Start hash algorithm
 
 	int N = messageBlocks.size();
-	auto shiftR = Shr(2, "00111100");
-	auto shiftL = Shl(2, "00111100");
+	auto shiftR = Shr("1001101010011010100110101001101010011010100110101001101010011010", 2);
+	auto shiftL = Shl("1001101010011010100110101001101010011010100110101001101010011010", 2);
+	auto rotr = Rotr("1001101010011010100110101001101010011010100110101001101010011010", 2);
+	auto rotl = Rotl("1001101010011010100110101001101010011010100110101001101010011010", 2);
 	for (auto i = 1; i <= N; i++)
 	{
 		// Prepare message schedule W
@@ -73,14 +75,14 @@ vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage)
 	return blocks;
 }
 
-string ConvertIntToBinaryString(int toConvert)
+string ConvertUnsignedLongLongToBinaryString(unsigned long long toConvert)
 {
-	return bitset<EIGHT>(toConvert).to_string();
+	return bitset<SIXTY_FOUR>(toConvert).to_string();
 }
 
-int ConvertBinaryStringToInt(string toConvert)
+unsigned long long ConvertBinaryStringToUnsignedLongLong(string toConvert)
 {
-	return bitset<EIGHT>(toConvert).to_ulong();
+	return bitset<SIXTY_FOUR>(toConvert).to_ullong();
 }
 
 // Algorithm functions
@@ -98,7 +100,7 @@ string PadMessageBlock(string block)
 	for (auto i = 0; i < k; ++i)
 		block += "0";
 
-	auto binary = ConvertIntToBinaryString(l);
+	auto binary = bitset<EIGHT>(l).to_string();
 
 	for (auto i = 0; i < ONE_HUNDRED_TWENTY_EIGHT - binary.length(); ++i)
 		block += "0";
@@ -117,26 +119,30 @@ string Maj(string x, string y, string z)
 	return "";
 }
 
-string Shr(int n, string x)
+string Shr(string x, int n)
 {
-	int convertedX = ConvertBinaryStringToInt(x);
-	int shiftedX = convertedX >> n;
-	return ConvertIntToBinaryString(shiftedX);
+	auto convertedX = ConvertBinaryStringToUnsignedLongLong(x);
+	auto shiftedX = convertedX >> n;
+	return ConvertUnsignedLongLongToBinaryString(shiftedX);
 }
 
-string Shl(int n, string x)
+string Shl(string x, int n)
 {
-	int convertedX = ConvertBinaryStringToInt(x);
-	int shiftedX = convertedX << n;
-	return ConvertIntToBinaryString(shiftedX);
+	auto convertedX = ConvertBinaryStringToUnsignedLongLong(x);
+	auto shiftedX = convertedX << n;
+	return ConvertUnsignedLongLongToBinaryString(shiftedX);
 }
 
-string Rotr(int n, string x)
+string Rotr(string x, int n)
 {
-	return "";
+	auto lhs = ConvertBinaryStringToUnsignedLongLong(Shr(x, n));
+	auto rhs = ConvertBinaryStringToUnsignedLongLong(Shl(x, SIXTY_FOUR - n));
+	return ConvertUnsignedLongLongToBinaryString(lhs | rhs);
 }
 
-string Rotl(int n, string x)
+string Rotl(string x, int n)
 {
-	return "";
+	auto lhs = ConvertBinaryStringToUnsignedLongLong(Shl(x, n));
+	auto rhs = ConvertBinaryStringToUnsignedLongLong(Shr(x, SIXTY_FOUR - n));
+	return ConvertUnsignedLongLongToBinaryString(lhs | rhs);
 }
