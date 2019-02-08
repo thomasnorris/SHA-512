@@ -34,6 +34,8 @@ void GenerateHash(string message)
 	auto rotr = Rotr("1001101010011010100110101001101010011010100110101001101010011010", 2);
 	auto rotl = Rotl("1001101010011010100110101001101010011010100110101001101010011010", 2);
 	auto exor = Xor("1001101010011010100110101001101010011010100110101001101010011010", "1001111010011010100110101001101010011010100110101001101010011010");
+	auto comp = Comp("1001101010011010100110101001101010011010100110101001101010011010");
+	auto add = AddModulo2("1001101010011010100110101001101010011010100110101001101010011010", "1001111010011010100110101001101010011010100110101001101010011010");
 	for (auto i = 1; i <= N; i++)
 	{
 		// Prepare message schedule W
@@ -154,3 +156,17 @@ string Xor(string x1, string x2)
 	auto rhs = ConvertBinaryStringToUnsignedLongLong(x2);
 	return ConvertUnsignedLongLongToBinaryString(lhs ^ rhs);
 }
+
+string Comp(string x)
+{
+	auto longX = ConvertBinaryStringToUnsignedLongLong(x);
+	return ConvertUnsignedLongLongToBinaryString(~longX);
+}
+
+string AddModulo2(string x1, string x2)
+{
+	auto longX1 = ConvertBinaryStringToUnsignedLongLong(x1);
+	auto longX2 = ConvertBinaryStringToUnsignedLongLong(x2);
+	return ConvertUnsignedLongLongToBinaryString(longX1 + longX2);
+}
+
