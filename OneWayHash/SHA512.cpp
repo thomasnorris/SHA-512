@@ -26,6 +26,12 @@ void GenerateHash(string message)
 	// H[i][j] = j'th word of the 'ith hash value. H[i][0] is left-most word of hash value i
 
 	// Start hash algorithm
+
+	int N = messageBlocks.size();
+	for (auto i = 1; i <= N; i++)
+	{
+		// Prepare message schedule W
+	}
 }
 
 string PadMessage(string message)
@@ -67,17 +73,17 @@ vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage)
 string PadMessageBlock(string block)
 {
 	int l = block.length();
-	int k = 896 - (l + 1);
+	int k = EIGHT_HUNDRED_NINETY_SIX - (l + 1);
 
 	block += "1";
 	for (auto i = 0; i < k; ++i)
 		block += "0";
 
-	auto lBinary = bitset<EIGHT>(l).to_string();
+	auto binary = bitset<EIGHT>(l).to_string();
 
-	for (auto i = 0; i < ONE_HUNDRED_TWENTY_EIGHT - lBinary.length(); ++i)
+	for (auto i = 0; i < ONE_HUNDRED_TWENTY_EIGHT - binary.length(); ++i)
 		block += "0";
 
-	block += lBinary;
+	block += binary;
 	return block;
 }
