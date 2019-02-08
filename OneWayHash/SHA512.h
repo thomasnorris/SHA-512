@@ -1,6 +1,7 @@
 #ifndef __SHA512_H__
 #define __SHA512_H__
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -34,7 +35,14 @@ const unsigned long long CONSTANTS[] =
 	0x4cc5d4becb3e42b6, 0x597f299cfc657e2a, 0x5fcb6fab3ad6faec, 0x6c44198c4a475817
 };
 
-void GenerateHash(string message);
-string PadMessageBlock(string block);
+const int ONE_THOUSAND_TWENTY_FOUR = 1024;
+const int ONE_HUNDRED_TWENTY_EIGHT = 128;
+const int SIXTY_FOUR = 64;
+const int SIXTEEN = 16;
+const int EIGHT = 8;
 
+void GenerateHash(string message);
+string PadMessage(string message);
+vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage);
+string PadMessageBlock(string block);
 #endif
