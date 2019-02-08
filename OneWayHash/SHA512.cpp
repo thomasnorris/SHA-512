@@ -29,6 +29,7 @@ void GenerateHash(string message)
 	// Start hash algorithm
 
 	int N = messageBlocks.size();
+	auto shift = Shr(2, "11010010");
 	for (auto i = 1; i <= N; i++)
 	{
 		// Prepare message schedule W
@@ -71,6 +72,17 @@ vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage)
 	return blocks;
 }
 
+string ConvertIntToBinaryString(int toConvert)
+{
+	return bitset<EIGHT>(toConvert).to_string();
+}
+
+int ConvertBinaryStringToInt(string toConvert)
+{
+	return bitset<EIGHT>(toConvert).to_ulong();
+}
+
+// Algorithm functions
 string PadMessageBlock(string block)
 {
 	// TODO: delete/change these after completion
@@ -85,11 +97,38 @@ string PadMessageBlock(string block)
 	for (auto i = 0; i < k; ++i)
 		block += "0";
 
-	auto binary = bitset<EIGHT>(l).to_string();
+	auto binary = ConvertIntToBinaryString(l);
 
 	for (auto i = 0; i < ONE_HUNDRED_TWENTY_EIGHT - binary.length(); ++i)
 		block += "0";
 
 	block += binary;
 	return block;
+}
+
+string Ch(string x, string y, string z)
+{
+	return "";
+}
+
+string Maj(string x, string y, string z)
+{
+	return "";
+}
+
+string Shr(int n, string x)
+{
+	int convertedX = ConvertBinaryStringToInt(x);
+	int shiftedX = convertedX >> n;
+	return ConvertIntToBinaryString(shiftedX);
+}
+
+string Rotr(int n, string x)
+{
+	return "";
+}
+
+string Rotl(int n, string x)
+{
+	return "";
 }

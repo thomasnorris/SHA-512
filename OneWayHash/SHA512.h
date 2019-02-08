@@ -49,5 +49,12 @@ const int EIGHT = 8;
 void GenerateHash(string message);
 string PadMessage(string message);
 vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage);
+string ConvertIntToBinaryString(int toConvert);
+int ConvertBinaryStringToInt(string toConvert);
 string PadMessageBlock(string block);
+string Ch(string x, string y, string z);
+string Maj(string x, string y, string z);
+string Shr(int n, string x);
+string Rotr(int n, string x);
+string Rotl(int n, string x);
 #endif
