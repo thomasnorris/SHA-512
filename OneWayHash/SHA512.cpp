@@ -7,6 +7,15 @@ using namespace std;
 
 void GenerateHash(string message)
 {
+	// Pad the message and turn in into blocks
+	auto paddedMessage = PadMessage(message);
+	auto blocks = ChunkPaddedMessageIntoBlocks(paddedMessage);
+
+	// Start hash algorithm
+}
+
+string PadMessage(string message)
+{
 	auto messageLength = message.length();
 	auto excessStartIndex = messageLength - (messageLength % ONE_THOUSAND_TWENTY_FOUR);
 	auto paddedMessage = message.substr(0, excessStartIndex);
@@ -14,6 +23,11 @@ void GenerateHash(string message)
 	auto excessBlock = message.substr(excessStartIndex, messageLength);
 	paddedMessage += PadMessageBlock(excessBlock);
 
+	return paddedMessage;
+}
+
+vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage)
+{
 	// The message is chunked into 1024 bit blocks which are split into 64 bit groups
 	vector<vector<string>> blocks;
 	for (auto i = 0; i < paddedMessage.length() / ONE_THOUSAND_TWENTY_FOUR; ++i)
@@ -33,6 +47,8 @@ void GenerateHash(string message)
 
 		blocks.push_back(groups);
 	}
+
+	return blocks;
 }
 
 string PadMessageBlock(string block)

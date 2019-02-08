@@ -1,6 +1,7 @@
 #ifndef __SHA512_H__
 #define __SHA512_H__
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -41,6 +42,7 @@ const int SIXTEEN = 16;
 const int EIGHT = 8;
 
 void GenerateHash(string message);
+string PadMessage(string message);
+vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage);
 string PadMessageBlock(string block);
-
 #endif
