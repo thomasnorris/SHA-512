@@ -39,12 +39,7 @@ const unsigned long long CONSTANTS[] =
 
 // constants for common integers
 const int ONE_THOUSAND_TWENTY_FOUR = 1024;
-const int EIGHT_HUNDRED_NINETY_SIX = 896;
-const int ONE_HUNDRED_TWENTY_EIGHT = 128;
-const int EIGHTY = 80;
 const int SIXTY_FOUR = 64;
-const int SIXTEEN = 16;
-const int EIGHT = 8;
 
 void GenerateHash(string message);
 string PadMessage(string message);

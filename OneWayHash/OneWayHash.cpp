@@ -49,7 +49,7 @@ string GetBitMessageFromFile()
 		for (auto it = bytes.begin(); it != bytes.end(); ++it)
 		{
 			string val = to_string(*it);
-			message += bitset<EIGHT>(stoi(val)).to_string();
+			message += bitset<8>(stoi(val)).to_string();
 		}
 
 		return message;

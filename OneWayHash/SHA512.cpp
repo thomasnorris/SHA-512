@@ -29,17 +29,6 @@ void GenerateHash(string message)
 	// Start hash algorithm
 
 	int N = messageBlocks.size();
-	auto shiftR = Shr(messageBlocks[0][0], 2);
-	auto shiftL = Shl(messageBlocks[0][0], 2);
-	auto rotr = Rotr(messageBlocks[0][0], 2);
-	auto rotl = Rotl(messageBlocks[0][0], 2);
-	auto exor = Xor(messageBlocks[0][0], messageBlocks[0][1]);
-	auto comp = Comp(messageBlocks[0][0]);
-	auto add = AddModulo2(messageBlocks[0][0], messageBlocks[0][1]);
-	auto bitAnd = And(messageBlocks[0][0], messageBlocks[0][1]);
-	auto chh = Ch(messageBlocks[0][0], messageBlocks[0][1], messageBlocks[0][2]);
-	auto maj = Maj(messageBlocks[0][0], messageBlocks[0][1], messageBlocks[0][2]);
-
 	for (auto i = 1; i <= N; i++)
 	{
 		// Prepare message schedule W
@@ -69,7 +58,7 @@ vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage)
 		string block = paddedMessage.substr(startIndex, ONE_THOUSAND_TWENTY_FOUR);
 
 		vector<string> words;
-		for (auto j = 0; j < SIXTEEN; j++)
+		for (auto j = 0; j < 16; j++)
 		{
 			j == 0 ? startIndex = 0 : startIndex = j * SIXTY_FOUR;
 			string word = block.substr(startIndex, SIXTY_FOUR);
@@ -101,15 +90,15 @@ string PadMessageBlock(string block)
 	// k = number of zero bits to pad the message with
 
 	int l = block.length();
-	int k = EIGHT_HUNDRED_NINETY_SIX - (l + 1);
+	int k = 896 - (l + 1);
 
 	block += "1";
 	for (auto i = 0; i < k; ++i)
 		block += "0";
 
-	auto binary = bitset<EIGHT>(l).to_string();
+	auto binary = bitset<8>(l).to_string();
 
-	for (auto i = 0; i < ONE_HUNDRED_TWENTY_EIGHT - binary.length(); ++i)
+	for (auto i = 0; i < 128 - binary.length(); ++i)
 		block += "0";
 
 	block += binary;
@@ -134,22 +123,26 @@ string Maj(string x, string y, string z)
 
 string Sigma0(string x)
 {
-	return "";
+	auto xor1 = Xor(Rotr(x, 1), Rotr(x, 8));
+	return Xor(xor1, Shr(x, 7));
 }
 
 string Sigma1(string x)
 {
-	return "";
+	auto xor1 = Xor(Rotr(x, 19), Rotr(x, 61));
+	return Xor(xor1, Shr(x, 6));
 }
 
 string Summation0(string x)
 {
-	return "";
+	auto xor1 = Xor(Rotr(x, 28), Rotr(x, 34));
+	return Xor(xor1, Rotr(x, 39));
 }
 
 string Summation1(string x)
 {
-	return "";
+	auto xor1 = Xor(Rotr(x, 14), Rotr(x, 18));
+	return Xor(xor1, Rotr(x, 41));
 }
 
 string Shr(string x, int n)
