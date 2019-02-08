@@ -37,6 +37,7 @@ const unsigned long long CONSTANTS[] =
 const int ONE_THOUSAND_TWENTY_FOUR = 1024;
 const int ONE_HUNDRED_TWENTY_EIGHT = 128;
 const int SIXTY_FOUR = 64;
+const int SIXTEEN = 16;
 const int EIGHT = 8;
 
 void GenerateHash(string message);

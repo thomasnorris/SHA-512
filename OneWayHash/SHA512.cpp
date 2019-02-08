@@ -7,21 +7,12 @@ using namespace std;
 
 void GenerateHash(string message)
 {
-	// If the message isn't a multiple of 24, it must be padded
 	auto messageLength = message.length();
-	string paddedMessage;
-	if (messageLength % ONE_THOUSAND_TWENTY_FOUR != 0)
-	{
-		auto excessStartIndex = messageLength - (messageLength % 1024);
-		paddedMessage = message.substr(0, excessStartIndex);
+	auto excessStartIndex = messageLength - (messageLength % ONE_THOUSAND_TWENTY_FOUR);
+	auto paddedMessage = message.substr(0, excessStartIndex);
 
-		auto excessBlock = message.substr(excessStartIndex + 1, messageLength);
-		paddedMessage += PadMessageBlock(excessBlock);
-	}
-	else
-	{
-		paddedMessage += PadMessageBlock(message);
-	}
+	auto excessBlock = message.substr(excessStartIndex, messageLength);
+	paddedMessage += PadMessageBlock(excessBlock);
 
 	// The message is chunked into 1024 bit blocks which are split into 64 bit groups
 	vector<vector<string>> blocks;
@@ -33,7 +24,7 @@ void GenerateHash(string message)
 		string block = paddedMessage.substr(startIndex, ONE_THOUSAND_TWENTY_FOUR);
 		vector<string> groups;
 
-		for (auto j = 0; j < EIGHT; j++)
+		for (auto j = 0; j < SIXTEEN; j++)
 		{
 			j == 0 ? startIndex = 0 : startIndex = j * SIXTY_FOUR;
 			string group = block.substr(startIndex, SIXTY_FOUR);
