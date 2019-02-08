@@ -122,6 +122,26 @@ string Maj(string x, string y, string z)
 	return "";
 }
 
+string Sigma0(string x)
+{
+	return "";
+}
+
+string Sigma1(string x)
+{
+	return "";
+}
+
+string Summation0(string x)
+{
+	return "";
+}
+
+string Summation1(string x)
+{
+	return "";
+}
+
 string Shr(string x, int n)
 {
 	auto convertedX = ConvertBinaryStringToUnsignedLongLong(x);

@@ -52,12 +52,23 @@ vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage);
 string ConvertUnsignedLongLongToBinaryString(unsigned long long toConvert);
 unsigned long long ConvertBinaryStringToUnsignedLongLong(string toConvert);
 string PadMessageBlock(string block);
+
+// The naming here matches the naming in the documentation
 string Ch(string x, string y, string z);
 string Maj(string x, string y, string z);
+// Lowercase sigma(x) functions
+string Sigma0(string x);
+string Sigma1(string x);
+// Uppercase sigma(x) functions
+string Summation0(string x);
+string Summation1(string x);
+// Bit shifts
 string Shr(string x, int n);
 string Shl(string x, int n);
+// Rotations
 string Rotr(string x, int n);
 string Rotl(string x, int n);
+// Other bitwise operations
 string Xor(string x1, string x2);
 string Comp(string x);
 string AddModulo2(string x1, string x2);
