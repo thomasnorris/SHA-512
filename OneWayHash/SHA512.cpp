@@ -22,7 +22,7 @@ void GenerateHash(string message)
 	// N = number of message blocks in padded message
 	// M[i] = message block i with a size of m bits
 	// M[i][j] = j'th word of the i'th message block. M[i][0] is left-most word of the message block i
-	// W[t] = t'th w-bit word of the MESSAGE_SCHEDULE
+	// W[t] = t'th w-bit word of the message schedule, generated from the padded message
 	// H[i] = i'th hash value, H[0] is the INITIAL_HASH value, H[N] is the final hash value
 	// H[i][j] = j'th word of the 'ith hash value. H[i][0] is left-most word of hash value i
 
