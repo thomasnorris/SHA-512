@@ -38,6 +38,7 @@ void GenerateHash(string message)
 	auto add = AddModulo2(messageBlocks[0][0], messageBlocks[0][1]);
 	auto bitAnd = And(messageBlocks[0][0], messageBlocks[0][1]);
 	auto chh = Ch(messageBlocks[0][0], messageBlocks[0][1], messageBlocks[0][2]);
+	auto maj = Maj(messageBlocks[0][0], messageBlocks[0][1], messageBlocks[0][2]);
 
 	for (auto i = 1; i <= N; i++)
 	{
@@ -124,7 +125,11 @@ string Ch(string x, string y, string z)
 
 string Maj(string x, string y, string z)
 {
-	return "";
+	auto xAndY = And(x, y);
+	auto xAndZ = And(x, z);
+	auto yAndZ = And(y, z);
+	auto xor1 = Xor(xAndY, xAndZ);
+	return Xor(xor1, yAndZ);
 }
 
 string Sigma0(string x)
