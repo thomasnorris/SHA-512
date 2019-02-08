@@ -11,8 +11,19 @@ using namespace std;
 void GenerateHash(string message)
 {
 	// Pad the message and turn in into blocks
-	auto paddedMessage = PadMessage(message);
-	auto blocks = ChunkPaddedMessageIntoBlocks(paddedMessage);
+	message = PadMessage(message);
+	auto messageBlocks = ChunkPaddedMessageIntoBlocks(message);
+
+	// Parameter descriptions
+	// m = number of bits in a message block = 1024
+	// w = number of bits in a word = 64 bits
+	// M = padded message
+	// N = number of message blocks in padded message
+	// M[i] = message block i with a size of m bits
+	// M[i][j] = j'th word of the i'th message block. M[i][0] is left-most word of the message block i
+	// W[t] = t'th w-bit word of the MESSAGE_SCHEDULE
+	// H[i] = i'th hash value, H[0] is the INITIAL_HASH value, H[N] is the final hash value
+	// H[i][j] = j'th word of the 'ith hash value. H[i][0] is left-most word of hash value i
 
 	// Start hash algorithm
 }
@@ -31,7 +42,6 @@ string PadMessage(string message)
 
 vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage)
 {
-	// The message is chunked into 1024 bit blocks which are split into 64 bit groups
 	vector<vector<string>> blocks;
 	for (auto i = 0; i < paddedMessage.length() / ONE_THOUSAND_TWENTY_FOUR; ++i)
 	{
@@ -39,16 +49,16 @@ vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage)
 
 		i == 0 ? startIndex = 0 : startIndex = i * ONE_THOUSAND_TWENTY_FOUR;
 		string block = paddedMessage.substr(startIndex, ONE_THOUSAND_TWENTY_FOUR);
-		vector<string> groups;
 
+		vector<string> words;
 		for (auto j = 0; j < SIXTEEN; j++)
 		{
 			j == 0 ? startIndex = 0 : startIndex = j * SIXTY_FOUR;
-			string group = block.substr(startIndex, SIXTY_FOUR);
-			groups.push_back(group);
+			string word = block.substr(startIndex, SIXTY_FOUR);
+			words.push_back(word);
 		}
 
-		blocks.push_back(groups);
+		blocks.push_back(words);
 	}
 
 	return blocks;
