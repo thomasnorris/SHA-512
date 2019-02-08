@@ -5,6 +5,9 @@
 
 using namespace std;
 
+// Algorithms and some variable names for padding and hash generation come from the 
+// documentation and pseudo-code found here: http://dx.doi.org/10.6028/NIST.FIPS.180-4
+
 void GenerateHash(string message)
 {
 	// Pad the message and turn in into blocks
@@ -53,7 +56,6 @@ vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage)
 
 string PadMessageBlock(string block)
 {
-	// Variable names come from the SHA-512 documentation and pseudo-code
 	int l = block.length();
 	int k = 896 - (l + 1);
 
