@@ -29,7 +29,8 @@ void GenerateHash(string message)
 	// Start hash algorithm
 
 	int N = messageBlocks.size();
-	auto shift = Shr(2, "11010010");
+	auto shiftR = Shr(2, "00111100");
+	auto shiftL = Shl(2, "00111100");
 	for (auto i = 1; i <= N; i++)
 	{
 		// Prepare message schedule W
@@ -120,6 +121,13 @@ string Shr(int n, string x)
 {
 	int convertedX = ConvertBinaryStringToInt(x);
 	int shiftedX = convertedX >> n;
+	return ConvertIntToBinaryString(shiftedX);
+}
+
+string Shl(int n, string x)
+{
+	int convertedX = ConvertBinaryStringToInt(x);
+	int shiftedX = convertedX << n;
 	return ConvertIntToBinaryString(shiftedX);
 }
 

@@ -55,6 +55,7 @@ string PadMessageBlock(string block);
 string Ch(string x, string y, string z);
 string Maj(string x, string y, string z);
 string Shr(int n, string x);
+string Shl(int n, string x);
 string Rotr(int n, string x);
 string Rotl(int n, string x);
 #endif
