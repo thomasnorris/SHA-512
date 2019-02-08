@@ -72,4 +72,5 @@ string Rotl(string x, int n);
 string Xor(string x1, string x2);
 string Comp(string x);
 string AddModulo2(string x1, string x2);
+string And(string x1, string x2);
 #endif
