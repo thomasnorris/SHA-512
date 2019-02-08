@@ -14,6 +14,7 @@ void GenerateHash(string message)
 	message = PadMessage(message);
 	auto messageBlocks = ChunkPaddedMessageIntoBlocks(message);
 
+	// TODO: delete/change these after completion
 	// Parameter descriptions
 	// m = number of bits in a message block = 1024
 	// w = number of bits in a word = 64 bits
@@ -72,6 +73,11 @@ vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage)
 
 string PadMessageBlock(string block)
 {
+	// TODO: delete/change these after completion
+	// Parameter descriptions
+	// l = message length
+	// k = number of zero bits to pad the message with
+
 	int l = block.length();
 	int k = EIGHT_HUNDRED_NINETY_SIX - (l + 1);
 
