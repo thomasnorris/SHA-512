@@ -58,4 +58,5 @@ string Shr(string x, int n);
 string Shl(string x, int n);
 string Rotr(string x, int n);
 string Rotl(string x, int n);
+string Xor(string x1, string x2);
 #endif

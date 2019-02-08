@@ -33,6 +33,7 @@ void GenerateHash(string message)
 	auto shiftL = Shl("1001101010011010100110101001101010011010100110101001101010011010", 2);
 	auto rotr = Rotr("1001101010011010100110101001101010011010100110101001101010011010", 2);
 	auto rotl = Rotl("1001101010011010100110101001101010011010100110101001101010011010", 2);
+	auto exor = Xor("1001101010011010100110101001101010011010100110101001101010011010", "1001111010011010100110101001101010011010100110101001101010011010");
 	for (auto i = 1; i <= N; i++)
 	{
 		// Prepare message schedule W
@@ -145,4 +146,11 @@ string Rotl(string x, int n)
 	auto lhs = ConvertBinaryStringToUnsignedLongLong(Shl(x, n));
 	auto rhs = ConvertBinaryStringToUnsignedLongLong(Shr(x, SIXTY_FOUR - n));
 	return ConvertUnsignedLongLongToBinaryString(lhs | rhs);
+}
+
+string Xor(string x1, string x2)
+{
+	auto lhs = ConvertBinaryStringToUnsignedLongLong(x1);
+	auto rhs = ConvertBinaryStringToUnsignedLongLong(x2);
+	return ConvertUnsignedLongLongToBinaryString(lhs ^ rhs);
 }
