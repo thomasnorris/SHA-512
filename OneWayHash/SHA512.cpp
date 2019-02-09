@@ -26,10 +26,13 @@ void GenerateHash(string message)
 	// W[t] = t'th w-bit word of the message schedule, generated from the padded message
 	// H[i] = i'th hash value, H[0] is the INITIAL_HASH value, H[N] is the final hash value
 	// H[i][j] = j'th word of the 'ith hash value. H[i][0] is left-most word of hash value i
+	// K = 80 values in CONSTANTS
 
 	// Start hash algorithm
-	int N = messageBlocks.size();
+	auto N = messageBlocks.size();
 	auto M = messageBlocks;
+	auto H = INITIAL_HASH;
+	auto K = CONSTANTS;
 	for (auto i = 0; i < N; i++)
 	{
 		// Prepare message schedule W
@@ -44,6 +47,34 @@ void GenerateHash(string message)
 			W.push_back(AddModulo2(temp2, W[t - 16]));
 		}
 
+		// Initialize eight working variables a - h
+		auto a = ConvertUnsignedLongLongToBinaryString(H[0]);
+		auto b = ConvertUnsignedLongLongToBinaryString(H[1]);
+		auto c = ConvertUnsignedLongLongToBinaryString(H[2]);
+		auto d = ConvertUnsignedLongLongToBinaryString(H[3]);
+		auto e = ConvertUnsignedLongLongToBinaryString(H[4]);
+		auto f = ConvertUnsignedLongLongToBinaryString(H[5]);
+		auto g = ConvertUnsignedLongLongToBinaryString(H[6]);
+		auto h = ConvertUnsignedLongLongToBinaryString(H[7]);
+
+		// Compute T1, T2, rearrange working variables
+		for (auto t = 0; t <= 79; ++t)
+		{
+			auto temp1 = AddModulo2(h, Summation1(e));
+			auto temp2 = AddModulo2(temp1, Ch(e, f, g));
+			auto temp3 = AddModulo2(temp2, ConvertUnsignedLongLongToBinaryString(K[t]));
+			auto T1 = AddModulo2(temp3, W[t]);
+			auto T2 = AddModulo2(Summation0(a), Maj(a, b, c));
+
+			h = g;
+			g = f;
+			f = e;
+			e = AddModulo2(d, T1);
+			d = c;
+			c = b;
+			b = a;
+			a = AddModulo2(T1, T2);
+		}
 	}
 }
 
