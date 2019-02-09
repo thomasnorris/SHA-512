@@ -37,10 +37,10 @@ void GenerateHash(string message)
 	{
 		// Prepare message schedule W
 		vector<string> W;
-		for (auto t = 0; t <= 15; ++t)
+		for (auto t = 0; t <= 15; t++)
 			W.push_back(M[i][t]);
 
-		for (auto t = 16; t <= 79; ++t)
+		for (auto t = 16; t <= 79; t++)
 		{
 			auto temp1 = AddModulo2(Sigma1(W[t - 2]), W[t - 7]);
 			auto temp2 = AddModulo2(temp1, Sigma0(W[t - 15]));
@@ -69,7 +69,7 @@ void GenerateHash(string message)
 		auto h = H[7];
 
 		// Compute T1, T2, rearrange working variables
-		for (auto t = 0; t <= 79; ++t)
+		for (auto t = 0; t <= 79; t++)
 		{
 			auto temp1 = AddModulo2(h, Summation1(e));
 			auto temp2 = AddModulo2(temp1, Ch(e, f, g));
@@ -97,6 +97,12 @@ void GenerateHash(string message)
 		H[6] = AddModulo2(g, H[6]);
 		H[7] = AddModulo2(h, H[7]);
 	}
+
+	string hash;
+	for (auto i = 0; i < 8; i++)
+	{
+		hash += ConvertBinaryStringToHexString(H[i]);
+	}
 }
 
 string PadMessage(string message)
@@ -114,7 +120,7 @@ string PadMessage(string message)
 vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage)
 {
 	vector<vector<string>> blocks;
-	for (auto i = 0; i < paddedMessage.length() / ONE_THOUSAND_TWENTY_FOUR; ++i)
+	for (auto i = 0; i < paddedMessage.length() / ONE_THOUSAND_TWENTY_FOUR; i++)
 	{
 		int startIndex;
 
@@ -147,7 +153,7 @@ unsigned long long ConvertBinaryStringToUnsignedLongLong(string toConvert)
 
 string ConvertBinaryStringToHexString(string toConvert)
 {
-	string hexString = "0x";
+	string hexString;
 	for (auto i = 0; i < toConvert.length(); i += 4)
 	{
 		stringstream stream;
