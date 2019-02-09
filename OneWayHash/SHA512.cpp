@@ -29,9 +29,21 @@ void GenerateHash(string message)
 
 	// Start hash algorithm
 	int N = messageBlocks.size();
-	for (auto i = 1; i <= N; i++)
+	auto M = messageBlocks;
+	for (auto i = 0; i < N; i++)
 	{
 		// Prepare message schedule W
+		vector<string> W;
+		for (auto t = 0; t <= 15; ++t)
+			W.push_back(M[i][t]);
+
+		for (auto t = 16; t <= 79; ++t)
+		{
+			auto temp1 = AddModulo2(Sigma1(W[t - 2]), W[t - 7]);
+			auto temp2 = AddModulo2(temp1, Sigma0(W[t - 15]));
+			W.push_back(AddModulo2(temp2, W[t - 16]));
+		}
+
 	}
 }
 
