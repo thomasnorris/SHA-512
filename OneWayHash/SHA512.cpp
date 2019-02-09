@@ -2,6 +2,7 @@
 #include "SHA512.h"
 #include "OneWayHash.h"
 #include <bitset>
+#include <sstream>
 
 using namespace std;
 
@@ -27,7 +28,6 @@ void GenerateHash(string message)
 	// H[i][j] = j'th word of the 'ith hash value. H[i][0] is left-most word of hash value i
 
 	// Start hash algorithm
-
 	int N = messageBlocks.size();
 	for (auto i = 1; i <= N; i++)
 	{
@@ -79,6 +79,19 @@ string ConvertUnsignedLongLongToBinaryString(unsigned long long toConvert)
 unsigned long long ConvertBinaryStringToUnsignedLongLong(string toConvert)
 {
 	return bitset<SIXTY_FOUR>(toConvert).to_ullong();
+}
+
+string ConvertBinaryStringToHexString(string toConvert)
+{
+	string hexString = "0x";
+	for (auto i = 0; i < toConvert.length(); i += 4)
+	{
+		stringstream stream;
+		int decimalEquivalent = ConvertBinaryStringToUnsignedLongLong(toConvert.substr(i, 4));
+		stream << hex << decimalEquivalent;
+		hexString += stream.str();
+	}
+	return hexString;
 }
 
 // Algorithm functions

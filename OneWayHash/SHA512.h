@@ -46,6 +46,7 @@ string PadMessage(string message);
 vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage);
 string ConvertUnsignedLongLongToBinaryString(unsigned long long toConvert);
 unsigned long long ConvertBinaryStringToUnsignedLongLong(string toConvert);
+string ConvertBinaryStringToHexString(string toConvert);
 string PadMessageBlock(string block);
 
 // The naming here matches the naming in the documentation
