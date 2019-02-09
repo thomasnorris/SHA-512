@@ -31,8 +31,8 @@ void GenerateHash(string message)
 	// Start hash algorithm
 	auto N = messageBlocks.size();
 	auto M = messageBlocks;
-	auto H = INITIAL_HASH;
 	auto K = CONSTANTS;
+	vector<string> H;
 	for (auto i = 0; i < N; i++)
 	{
 		// Prepare message schedule W
@@ -48,14 +48,25 @@ void GenerateHash(string message)
 		}
 
 		// Initialize eight working variables a - h
-		auto a = ConvertUnsignedLongLongToBinaryString(H[0]);
-		auto b = ConvertUnsignedLongLongToBinaryString(H[1]);
-		auto c = ConvertUnsignedLongLongToBinaryString(H[2]);
-		auto d = ConvertUnsignedLongLongToBinaryString(H[3]);
-		auto e = ConvertUnsignedLongLongToBinaryString(H[4]);
-		auto f = ConvertUnsignedLongLongToBinaryString(H[5]);
-		auto g = ConvertUnsignedLongLongToBinaryString(H[6]);
-		auto h = ConvertUnsignedLongLongToBinaryString(H[7]);
+		if (i == 0)
+		{
+			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[0]));
+			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[1]));
+			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[2]));
+			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[3]));
+			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[4]));
+			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[5]));
+			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[6]));
+			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[7]));
+		}
+		auto a = H[0];
+		auto b = H[1];
+		auto c = H[2];
+		auto d = H[3];
+		auto e = H[4];
+		auto f = H[5];
+		auto g = H[6];
+		auto h = H[7];
 
 		// Compute T1, T2, rearrange working variables
 		for (auto t = 0; t <= 79; ++t)
@@ -75,6 +86,16 @@ void GenerateHash(string message)
 			b = a;
 			a = AddModulo2(T1, T2);
 		}
+
+		// Compute i'th intermediate hash value H[i]
+		H[0] = AddModulo2(a, H[0]);
+		H[1] = AddModulo2(b, H[1]);
+		H[2] = AddModulo2(c, H[2]);
+		H[3] = AddModulo2(d, H[3]);
+		H[4] = AddModulo2(e, H[4]);
+		H[5] = AddModulo2(f, H[5]);
+		H[6] = AddModulo2(g, H[6]);
+		H[7] = AddModulo2(h, H[7]);
 	}
 }
 
