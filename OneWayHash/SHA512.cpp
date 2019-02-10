@@ -49,16 +49,9 @@ string GenerateHash(string message)
 
 		// Initialize eight working variables a - h
 		if (i == 0)
-		{
-			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[0]));
-			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[1]));
-			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[2]));
-			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[3]));
-			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[4]));
-			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[5]));
-			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[6]));
-			H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[7]));
-		}
+			for (auto j = 0; j < 8; j++)
+				H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[j]));
+
 		auto a = H[0];
 		auto b = H[1];
 		auto c = H[2];
