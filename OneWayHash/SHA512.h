@@ -41,7 +41,7 @@ const unsigned long long CONSTANTS[] =
 const int ONE_THOUSAND_TWENTY_FOUR = 1024;
 const int SIXTY_FOUR = 64;
 
-void GenerateHash(string message);
+string GenerateHash(string message);
 string PadMessage(string message);
 vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage);
 string ConvertUnsignedLongLongToBinaryString(unsigned long long toConvert);

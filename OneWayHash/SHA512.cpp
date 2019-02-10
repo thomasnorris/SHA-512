@@ -9,7 +9,7 @@ using namespace std;
 // Algorithms and some variable names for padding and hash generation come from the 
 // documentation and pseudo-code found here: http://dx.doi.org/10.6028/NIST.FIPS.180-4
 
-void GenerateHash(string message)
+string GenerateHash(string message)
 {
 	// Pad the message and turn in into blocks
 	message = PadMessage(message);
@@ -100,9 +100,9 @@ void GenerateHash(string message)
 
 	string hash;
 	for (auto i = 0; i < 8; i++)
-	{
 		hash += ConvertBinaryStringToHexString(H[i]);
-	}
+
+	return hash;
 }
 
 string PadMessage(string message)
@@ -153,15 +153,10 @@ unsigned long long ConvertBinaryStringToUnsignedLongLong(string toConvert)
 
 string ConvertBinaryStringToHexString(string toConvert)
 {
-	string hexString;
-	for (auto i = 0; i < toConvert.length(); i += 4)
-	{
-		stringstream stream;
-		int decimalEquivalent = ConvertBinaryStringToUnsignedLongLong(toConvert.substr(i, 4));
-		stream << hex << decimalEquivalent;
-		hexString += stream.str();
-	}
-	return hexString;
+	stringstream stream;
+	auto converted = ConvertBinaryStringToUnsignedLongLong(toConvert);
+	stream << hex << converted;
+	return stream.str();
 }
 
 // Algorithm functions

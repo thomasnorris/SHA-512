@@ -23,7 +23,7 @@ int main()
 
 	auto message = GetBitMessageFromFile();
 
-	GenerateHash(message);
+	PrintToConsole("The generated hash is: " + GenerateHash(message));
 
 	system("pause");
 	return EXIT_SUCCESS;
