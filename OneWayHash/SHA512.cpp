@@ -42,9 +42,9 @@ void GenerateHash(string message)
 
 		for (auto t = 16; t <= 79; t++)
 		{
-			auto temp1 = AddModulo2(Sigma1(W[t - 2]), W[t - 7]);
-			auto temp2 = AddModulo2(temp1, Sigma0(W[t - 15]));
-			W.push_back(AddModulo2(temp2, W[t - 16]));
+			auto temp1 = Add(Sigma1(W[t - 2]), W[t - 7]);
+			auto temp2 = Add(temp1, Sigma0(W[t - 15]));
+			W.push_back(Add(temp2, W[t - 16]));
 		}
 
 		// Initialize eight working variables a - h
@@ -71,31 +71,31 @@ void GenerateHash(string message)
 		// Compute T1, T2, rearrange working variables
 		for (auto t = 0; t <= 79; t++)
 		{
-			auto temp1 = AddModulo2(h, Summation1(e));
-			auto temp2 = AddModulo2(temp1, Ch(e, f, g));
-			auto temp3 = AddModulo2(temp2, ConvertUnsignedLongLongToBinaryString(K[t]));
-			auto T1 = AddModulo2(temp3, W[t]);
-			auto T2 = AddModulo2(Summation0(a), Maj(a, b, c));
+			auto temp1 = Add(h, Summation1(e));
+			auto temp2 = Add(temp1, Ch(e, f, g));
+			auto temp3 = Add(temp2, ConvertUnsignedLongLongToBinaryString(K[t]));
+			auto T1 = Add(temp3, W[t]);
+			auto T2 = Add(Summation0(a), Maj(a, b, c));
 
 			h = g;
 			g = f;
 			f = e;
-			e = AddModulo2(d, T1);
+			e = Add(d, T1);
 			d = c;
 			c = b;
 			b = a;
-			a = AddModulo2(T1, T2);
+			a = Add(T1, T2);
 		}
 
 		// Compute i'th intermediate hash value H[i]
-		H[0] = AddModulo2(a, H[0]);
-		H[1] = AddModulo2(b, H[1]);
-		H[2] = AddModulo2(c, H[2]);
-		H[3] = AddModulo2(d, H[3]);
-		H[4] = AddModulo2(e, H[4]);
-		H[5] = AddModulo2(f, H[5]);
-		H[6] = AddModulo2(g, H[6]);
-		H[7] = AddModulo2(h, H[7]);
+		H[0] = Add(a, H[0]);
+		H[1] = Add(b, H[1]);
+		H[2] = Add(c, H[2]);
+		H[3] = Add(d, H[3]);
+		H[4] = Add(e, H[4]);
+		H[5] = Add(f, H[5]);
+		H[6] = Add(g, H[6]);
+		H[7] = Add(h, H[7]);
 	}
 
 	string hash;
@@ -249,13 +249,6 @@ string Rotr(string x, int n)
 	return ConvertUnsignedLongLongToBinaryString(lhs | rhs);
 }
 
-string Rotl(string x, int n)
-{
-	auto lhs = ConvertBinaryStringToUnsignedLongLong(Shl(x, n));
-	auto rhs = ConvertBinaryStringToUnsignedLongLong(Shr(x, SIXTY_FOUR - n));
-	return ConvertUnsignedLongLongToBinaryString(lhs | rhs);
-}
-
 string Xor(string x1, string x2)
 {
 	auto lhs = ConvertBinaryStringToUnsignedLongLong(x1);
@@ -269,11 +262,12 @@ string Comp(string x)
 	return ConvertUnsignedLongLongToBinaryString(~longX);
 }
 
-string AddModulo2(string x1, string x2)
+string Add(string x1, string x2)
 {
 	auto longX1 = ConvertBinaryStringToUnsignedLongLong(x1);
 	auto longX2 = ConvertBinaryStringToUnsignedLongLong(x2);
-	return ConvertUnsignedLongLongToBinaryString(longX1 + longX2);
+	unsigned long long mod = powl(2, SIXTY_FOUR);
+	return ConvertUnsignedLongLongToBinaryString((longX1 + longX2) % mod);
 }
 
 string And(string x1, string x2)
