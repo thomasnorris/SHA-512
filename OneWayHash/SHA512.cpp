@@ -254,8 +254,7 @@ string Add(string x1, string x2)
 {
 	auto longX1 = ConvertBinaryStringToUnsignedLongLong(x1);
 	auto longX2 = ConvertBinaryStringToUnsignedLongLong(x2);
-	unsigned long long mod = powl(2, SIXTY_FOUR);
-	return ConvertUnsignedLongLongToBinaryString((longX1 + longX2) % mod);
+	return ConvertUnsignedLongLongToBinaryString(longX1 + longX2);
 }
 
 string And(string x1, string x2)
