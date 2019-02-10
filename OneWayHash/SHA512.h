@@ -40,6 +40,8 @@ const unsigned long long CONSTANTS[] =
 // constants for common integers
 const int ONE_THOUSAND_TWENTY_FOUR = 1024;
 const int SIXTY_FOUR = 64;
+const int SIXTEEN = 16;
+const int EIGHT = 8;
 
 string GenerateHash(string message);
 string PadMessage(string message);

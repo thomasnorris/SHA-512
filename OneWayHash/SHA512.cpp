@@ -49,7 +49,7 @@ string GenerateHash(string message)
 
 		// Initialize eight working variables a - h
 		if (i == 0)
-			for (auto j = 0; j < 8; j++)
+			for (auto j = 0; j < EIGHT; j++)
 				H.push_back(ConvertUnsignedLongLongToBinaryString(INITIAL_HASH[j]));
 
 		auto a = H[0];
@@ -92,7 +92,7 @@ string GenerateHash(string message)
 	}
 
 	string hash;
-	for (auto i = 0; i < 8; i++)
+	for (auto i = 0; i < EIGHT; i++)
 		hash += ConvertBinaryStringToHexString(H[i]);
 
 	return hash;
@@ -121,7 +121,7 @@ vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage)
 		string block = paddedMessage.substr(startIndex, ONE_THOUSAND_TWENTY_FOUR);
 
 		vector<string> words;
-		for (auto j = 0; j < 16; j++)
+		for (auto j = 0; j < SIXTEEN; j++)
 		{
 			j == 0 ? startIndex = 0 : startIndex = j * SIXTY_FOUR;
 			string word = block.substr(startIndex, SIXTY_FOUR);
@@ -167,7 +167,7 @@ string PadMessageBlock(string block)
 	for (auto i = 0; i < k; ++i)
 		block += "0";
 
-	auto binary = bitset<8>(l).to_string();
+	auto binary = bitset<EIGHT>(l).to_string();
 
 	for (auto i = 0; i < 128 - binary.length(); ++i)
 		block += "0";
