@@ -101,7 +101,7 @@ string GenerateHash(string message)
 string PadMessage(string message)
 {
 	auto messageLength = message.length();
-
+	
 	if (messageLength % ONE_THOUSAND_TWENTY_FOUR == 0)
 		return message;
 	if (messageLength < ONE_THOUSAND_TWENTY_FOUR)
@@ -176,7 +176,7 @@ string PadMessageBlock(string block)
 	block += "1";
 	for (auto i = 0; i < k; ++i)
 		block += "0";
-
+	
 	string binary;
 	while (l > 0)
 	{
