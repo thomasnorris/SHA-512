@@ -11,34 +11,31 @@
 
 using namespace std;
 
-// TODO: Remove hardcoded text file name, probably can be changed to a local variable 
-string _fileName = "InputFile.txt";
-
 int main()
 {
-	// TODO: Remove comment 
-	/*PrintToConsole("This program will generate an SHA 512 hash for a given file.\nType the name of a file (including extension) in this directory OR type the full directory path of a file.");
-	cin >> _fileName;
-	PrintToConsole();*/
+	string fileName;
+	PrintToConsole("This program will generate an SHA-512 hash for a given file.\nType the name of a file (case sensitive, including extension) in this directory OR type the full directory path of a file:");
+	cin >> fileName;
+	PrintToConsole();
 
-	auto message = GetBitMessageFromFile();
+	auto message = GetBitMessageFromFile(fileName);
 
-	PrintToConsole("The generated hash is: " + GenerateHash(message));
+	PrintToConsole("The SHA-512 hash value is:\n" + GenerateHash(message) + "\n");
 
 	system("pause");
 	return EXIT_SUCCESS;
 }
 
-string GetBitMessageFromFile()
+string GetBitMessageFromFile(string fileName)
 {
-	ifstream file(_fileName, ifstream::ate | ifstream::binary);
+	ifstream file(fileName, ifstream::ate | ifstream::binary);
 
 	if (!file.good())
-		Error("The file \"" + _fileName + "\" was not found.");
+		Error("The file \"" + fileName + "\" was not found.");
 
 	try
 	{
-		PrintToConsole("Reading file \"" + _fileName + "\"...");
+		PrintToConsole("Reading file \"" + fileName + "\"...");
 		const ifstream::pos_type position = file.tellg();
 		vector<char> bytes(position);
 
