@@ -15,7 +15,6 @@ string GenerateHash(string message)
 	message = PadMessage(message);
 	auto messageBlocks = ChunkPaddedMessageIntoBlocks(message);
 
-	// TODO: delete/change these after completion
 	// Parameter descriptions
 	// m = number of bits in a message block = 1024
 	// w = number of bits in a word = 64 bits
@@ -25,7 +24,7 @@ string GenerateHash(string message)
 	// M[i][j] = j'th word of the i'th message block. M[i][0] is left-most word of the message block i
 	// W[t] = t'th w-bit word of the message schedule, generated from the padded message
 	// H[i] = i'th hash value, H[0] is the INITIAL_HASH value, H[N] is the final hash value
-	// H[i][j] = j'th word of the 'ith hash value. H[i][0] is left-most word of hash value i
+	// H[i][j] = j'th word of the i'th hash value. H[i][0] is left-most word of hash value i
 	// K = 80 values in CONSTANTS
 
 	// Start hash algorithm
@@ -100,11 +99,8 @@ string GenerateHash(string message)
 
 string PadMessage(string message)
 {
-	// TODO: delete/change these after completion
-	// Parameter descriptions
 	// l = message length
-	// k = number of zero bits to pad the message with
-
+	// k = number of zeroes to pad the message with
 	int l = message.length();
 	int k = ONE_THOUSAND_TWENTY_FOUR - (l % ONE_THOUSAND_TWENTY_FOUR);
 
@@ -117,6 +113,7 @@ string PadMessage(string message)
 
 	k -= binary.length();
 
+	// add 1 to the message and then add k - 1 zeroes
 	message += "1";
 	for (auto i = 1; i < k; ++i)
 		message += "0";
@@ -172,12 +169,6 @@ string ConvertBinaryStringToHexString(string toConvert)
 }
 
 // Algorithm functions
-string PadMessageBlock(string block)
-{
-	
-	return block;
-}
-
 string Ch(string x, string y, string z)
 {
 	auto xAndY = And(x, y);
