@@ -14,13 +14,13 @@ using namespace std;
 int main()
 {
 	string fileName;
-	PrintToConsole("This program will generate an SHA-512 hash for a given file.\nType the name of a file (case sensitive, including extension) in this directory OR type the full directory path of a file:");
+	cout << "This program will generate an SHA-512 hash for a given file.\nType the name of a local file OR type the full directory path of a file (case sensitive, including extension):" << endl;
 	cin >> fileName;
-	PrintToConsole();
+	cout << endl;
 
 	auto message = GetBitMessageFromFile(fileName);
 
-	PrintToConsole("The SHA-512 hash value is:\n" + GenerateHash(message) + "\n");
+	cout << "The SHA-512 hash value is:\n" + GenerateHash(message) + "\n" << endl;
 
 	system("pause");
 	return EXIT_SUCCESS;
@@ -35,7 +35,7 @@ string GetBitMessageFromFile(string fileName)
 
 	try
 	{
-		PrintToConsole("Reading file \"" + fileName + "\"...");
+		cout << "Reading file \"" + fileName + "\"..." << endl;
 		const ifstream::pos_type position = file.tellg();
 		vector<char> bytes(position);
 
@@ -63,12 +63,7 @@ string GetBitMessageFromFile(string fileName)
 
 void Error(string message)
 {
-	PrintToConsole(message);
+	cout << message << endl;
 	system("pause");
 	exit(EXIT_FAILURE);
-}
-
-void PrintToConsole(string message)
-{
-	cout << message << endl;
 }
