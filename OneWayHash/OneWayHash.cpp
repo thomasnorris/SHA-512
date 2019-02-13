@@ -23,7 +23,7 @@ int main()
 
 	auto message = GetBitMessageFromFile();
 
-	GenerateHash(message);
+	PrintToConsole("The generated hash is: " + GenerateHash(message));
 
 	system("pause");
 	return EXIT_SUCCESS;
@@ -49,7 +49,7 @@ string GetBitMessageFromFile()
 		for (auto it = bytes.begin(); it != bytes.end(); ++it)
 		{
 			string val = to_string(*it);
-			message += bitset<8>(stoi(val)).to_string();
+			message += bitset<EIGHT>(stoi(val)).to_string();
 		}
 
 		return message;

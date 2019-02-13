@@ -5,12 +5,14 @@
 
 using namespace std;
 
-const unsigned long long INITIAL_HASH[8] = 
+// 8 initial hash values
+const unsigned long long INITIAL_HASH[] = 
 {
-	0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 0x3c6ef372fe94f82b, 0xa54ff53a6f1d36f1,
-	0x510e527fade682d1, 0x9b05688c2b3e6c1f, 0x1f83d9abfb41bd6b, 0x5b30cd19137e2179
+	0x6a09e667f3bcc908, 0xbb67ae8584caa73b, 0x3c6ef372fe94f82b, 0xa54ff53a5f1d36f1,
+	0x510e527fade682d1, 0x9b05688c2b3e6c1f, 0x1f83d9abfb41bd6b, 0x5be0cd19137e2179
 };
 
+// 80 constant K values
 const unsigned long long CONSTANTS[] = 
 {
 	0x428a2f98d728ae22, 0x7137449123ef65cd, 0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc,
@@ -35,14 +37,37 @@ const unsigned long long CONSTANTS[] =
 	0x4cc5d4becb3e42b6, 0x597f299cfc657e2a, 0x5fcb6fab3ad6faec, 0x6c44198c4a475817
 };
 
+// constants for common integers
 const int ONE_THOUSAND_TWENTY_FOUR = 1024;
-const int ONE_HUNDRED_TWENTY_EIGHT = 128;
 const int SIXTY_FOUR = 64;
 const int SIXTEEN = 16;
 const int EIGHT = 8;
 
-void GenerateHash(string message);
+string GenerateHash(string message);
 string PadMessage(string message);
 vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage);
+string ConvertUnsignedLongLongToBinaryString(unsigned long long toConvert);
+unsigned long long ConvertBinaryStringToUnsignedLongLong(string toConvert);
+string ConvertBinaryStringToHexString(string toConvert);
 string PadMessageBlock(string block);
+
+// The naming here matches the naming in the documentation
+string Ch(string x, string y, string z);
+string Maj(string x, string y, string z);
+// Lowercase sigma(x) functions
+string Sigma0(string x);
+string Sigma1(string x);
+// Uppercase sigma(x) functions
+string Summation0(string x);
+string Summation1(string x);
+// Bit shifts
+string Shr(string x, int n);
+string Shl(string x, int n);
+// Rotations
+string Rotr(string x, int n);
+// Other bitwise operations
+string Xor(string x1, string x2);
+string Comp(string x);
+string Add(string x1, string x2);
+string And(string x1, string x2);
 #endif
