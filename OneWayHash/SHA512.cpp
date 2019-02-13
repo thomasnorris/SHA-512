@@ -147,8 +147,12 @@ unsigned long long ConvertBinaryStringToUnsignedLongLong(string toConvert)
 string ConvertBinaryStringToHexString(string toConvert)
 {
 	stringstream stream;
-	auto converted = ConvertBinaryStringToUnsignedLongLong(toConvert);
-	stream << hex << converted;
+	for (auto i = 0; i < toConvert.length(); i+= 4)
+	{
+		auto converted = ConvertBinaryStringToUnsignedLongLong(toConvert.substr(i, 4));
+		stream << hex << converted;
+	}
+
 	return stream.str();
 }
 
