@@ -100,20 +100,29 @@ string GenerateHash(string message)
 
 string PadMessage(string message)
 {
-	auto messageLength = message.length();
+	// TODO: delete/change these after completion
+	// Parameter descriptions
+	// l = message length
+	// k = number of zero bits to pad the message with
 
-	if (messageLength % ONE_THOUSAND_TWENTY_FOUR == 0)
-		return message;
-	if (messageLength < ONE_THOUSAND_TWENTY_FOUR)
-		return  PadMessageBlock(message);
+	int l = message.length();
+	int k = ONE_THOUSAND_TWENTY_FOUR - (l % ONE_THOUSAND_TWENTY_FOUR);
 
-	auto excessStartIndex = messageLength - (messageLength % ONE_THOUSAND_TWENTY_FOUR);
-	auto paddedMessage = message.substr(0, excessStartIndex);
+	string binary;
+	while (l > 0)
+	{
+		binary.insert(0, to_string(l % 2));
+		l = l / 2;
+	}
 
-	auto excessBlock = message.substr(excessStartIndex, messageLength);
-	paddedMessage += PadMessageBlock(excessBlock);
+	k -= binary.length();
 
-	return paddedMessage;
+	message += "1";
+	for (auto i = 1; i < k; ++i)
+		message += "0";
+
+	message += binary;
+	return message;
 }
 
 vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage)
@@ -165,29 +174,7 @@ string ConvertBinaryStringToHexString(string toConvert)
 // Algorithm functions
 string PadMessageBlock(string block)
 {
-	// TODO: delete/change these after completion
-	// Parameter descriptions
-	// l = message length
-	// k = number of zero bits to pad the message with
-
-	int l = block.length();
-	int k = 896 - (l + 1);
-
-	block += "1";
-	for (auto i = 0; i < k; ++i)
-		block += "0";
-
-	string binary;
-	while (l > 0)
-	{
-		binary.insert(0, to_string(l % 2));
-		l = l / 2;
-	}
-
-	for (auto i = 0; i < 128 - binary.length(); ++i)
-		block += "0";
-
-	block += binary;
+	
 	return block;
 }
 
