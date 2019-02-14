@@ -43,6 +43,16 @@ const int SIXTY_FOUR = 64;
 const int SIXTEEN = 16;
 const int EIGHT = 8;
 
+enum BitOpEnum
+{
+	SHL,
+	SHR,
+	XOR,
+	COMP,
+	ADD,
+	AND
+};
+
 string GenerateHash(string message);
 vector<vector<string>> PadAndChunkMessage(string message);
 string ConvertUnsignedLongLongToBinaryString(unsigned long long toConvert);
@@ -58,6 +68,8 @@ string Sigma1(string x);
 // Uppercase sigma(x) functions
 string Summation0(string x);
 string Summation1(string x);
+// Bitwise operations
+string BitOp(BitOpEnum bitOp, string x1, string x2 = "", int n = 0);
 // Bit shifts
 string Shr(string x, int n);
 string Shl(string x, int n);
