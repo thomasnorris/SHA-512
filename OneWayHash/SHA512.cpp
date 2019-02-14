@@ -153,38 +153,39 @@ string BitOp(BitOpEnum bitOp, string x1, string x2, int n)
 	auto longX1 = ConvertBinaryStringToUnsignedLongLong(x1);
 	auto longX2 = ConvertBinaryStringToUnsignedLongLong(x2);
 	unsigned long long result = 0;
+
 	switch (bitOp)
 	{
-	case SHR:
-	{
-		result = longX1 >> n;
-		break;
-	}
-	case SHL:
-	{
-		result = longX1 << n;
-		break;
-	}
-	case NOT:
-	{
-		result = ~longX1;
-		break;
-	}
-	case ADD:
-	{
-		result = longX1 + longX2;
-		break;
-	}
-	case AND:
-	{
-		result = longX1 & longX2;
-		break;
-	}
-	case XOR:
-	{
-		result = longX1 ^ longX2;
-		break;
-	}
+		case SHR:
+		{
+			result = longX1 >> n;
+			break;
+		}
+		case SHL:
+		{
+			result = longX1 << n;
+			break;
+		}
+		case NOT:
+		{
+			result = ~longX1;
+			break;
+		}
+		case ADD:
+		{
+			result = longX1 + longX2;
+			break;
+		}
+		case AND:
+		{
+			result = longX1 & longX2;
+			break;
+		}
+		case XOR:
+		{
+			result = longX1 ^ longX2;
+			break;
+		}
 	}
 
 	return ConvertUnsignedLongLongToBinaryString(result);
