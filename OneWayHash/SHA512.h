@@ -44,8 +44,7 @@ const int SIXTEEN = 16;
 const int EIGHT = 8;
 
 string GenerateHash(string message);
-string PadMessage(string message);
-vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage);
+vector<vector<string>> PadAndChunkMessage(string message);
 string ConvertUnsignedLongLongToBinaryString(unsigned long long toConvert);
 unsigned long long ConvertBinaryStringToUnsignedLongLong(string toConvert);
 string ConvertBinaryStringToHexString(string toConvert);

@@ -11,28 +11,22 @@ using namespace std;
 
 string GenerateHash(string message)
 {
-	// Pad the message and turn in into blocks
-	message = PadMessage(message);
-	auto messageBlocks = ChunkPaddedMessageIntoBlocks(message);
-
 	// Parameter descriptions
-	// m = number of bits in a message block = 1024
+	// m = number of bits in a message block = 1024 bits
 	// w = number of bits in a word = 64 bits
 	// M = padded message
-	// N = number of message blocks in padded message
 	// M[i] = message block i with a size of m bits
-	// M[i][j] = j'th word of the i'th message block. M[i][0] is left-most word of the message block i
-	// W[t] = t'th w-bit word of the message schedule, generated from the padded message
-	// H[i] = i'th hash value, H[0] is the INITIAL_HASH value, H[N] is the final hash value
-	// H[i][j] = j'th word of the i'th hash value. H[i][0] is left-most word of hash value i
+	// M[i][j] = j'th word of the i'th message block
+	// W[t] = t'th w-bit word of the message schedule
+	// H[i] = i'th hash value with H[0] as the INITIAL_HASH value
+	// H[i][j] = j'th word of the i'th hash value
 	// K = 80 values in CONSTANTS
 
 	// Start hash algorithm
-	auto N = messageBlocks.size();
-	auto M = messageBlocks;
+	auto M = PadAndChunkMessage(message);
 	auto K = CONSTANTS;
 	vector<string> H;
-	for (auto i = 0; i < N; i++)
+	for (auto i = 0; i < M.size(); i++)
 	{
 		// Prepare message schedule W
 		vector<string> W;
@@ -97,7 +91,7 @@ string GenerateHash(string message)
 	return hash;
 }
 
-string PadMessage(string message)
+vector<vector<string>> PadAndChunkMessage(string message)
 {
 	// l = message length
 	// k = number of zeroes to pad the message with
@@ -119,18 +113,14 @@ string PadMessage(string message)
 		message += "0";
 
 	message += binary;
-	return message;
-}
 
-vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage)
-{
 	vector<vector<string>> blocks;
-	for (auto i = 0; i < paddedMessage.length() / ONE_THOUSAND_TWENTY_FOUR; i++)
+	for (auto i = 0; i < message.length() / ONE_THOUSAND_TWENTY_FOUR; i++)
 	{
 		int startIndex;
 
 		i == 0 ? startIndex = 0 : startIndex = i * ONE_THOUSAND_TWENTY_FOUR;
-		string block = paddedMessage.substr(startIndex, ONE_THOUSAND_TWENTY_FOUR);
+		string block = message.substr(startIndex, ONE_THOUSAND_TWENTY_FOUR);
 
 		vector<string> words;
 		for (auto j = 0; j < SIXTEEN; j++)
