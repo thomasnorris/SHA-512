@@ -11,28 +11,11 @@ using namespace std;
 
 string GenerateHash(string message)
 {
-	// Pad the message and turn in into blocks
-	message = PadMessage(message);
-	auto messageBlocks = ChunkPaddedMessageIntoBlocks(message);
-
-	// Parameter descriptions
-	// m = number of bits in a message block = 1024
-	// w = number of bits in a word = 64 bits
-	// M = padded message
-	// N = number of message blocks in padded message
-	// M[i] = message block i with a size of m bits
-	// M[i][j] = j'th word of the i'th message block. M[i][0] is left-most word of the message block i
-	// W[t] = t'th w-bit word of the message schedule, generated from the padded message
-	// H[i] = i'th hash value, H[0] is the INITIAL_HASH value, H[N] is the final hash value
-	// H[i][j] = j'th word of the i'th hash value. H[i][0] is left-most word of hash value i
-	// K = 80 values in CONSTANTS
-
-	// Start hash algorithm
-	auto N = messageBlocks.size();
-	auto M = messageBlocks;
-	auto K = CONSTANTS;
+	// Pad and convert message into 1024-bit blocks
+	auto M = PadAndChunkMessage(message);
+	// Create vector to hold intermediate hash values for each iteration
 	vector<string> H;
-	for (auto i = 0; i < N; i++)
+	for (auto i = 0; i < M.size(); i++)
 	{
 		// Prepare message schedule W
 		vector<string> W;
@@ -41,9 +24,9 @@ string GenerateHash(string message)
 
 		for (auto t = 16; t <= 79; t++)
 		{
-			auto temp1 = Add(Sigma1(W[t - 2]), W[t - 7]);
-			auto temp2 = Add(temp1, Sigma0(W[t - 15]));
-			W.push_back(Add(temp2, W[t - 16]));
+			auto temp1 = BitOp(ADD, Sigma1(W[t - 2]), W[t - 7]);
+			auto temp2 = BitOp(ADD, temp1, Sigma0(W[t - 15]));
+			W.push_back(BitOp(ADD, temp2, W[t - 16]));
 		}
 
 		// Initialize eight working variables a - h
@@ -63,31 +46,31 @@ string GenerateHash(string message)
 		// Compute T1, T2, rearrange working variables
 		for (auto t = 0; t <= 79; t++)
 		{
-			auto temp1 = Add(h, Summation1(e));
-			auto temp2 = Add(temp1, Ch(e, f, g));
-			auto temp3 = Add(temp2, ConvertUnsignedLongLongToBinaryString(K[t]));
-			auto T1 = Add(temp3, W[t]);
-			auto T2 = Add(Summation0(a), Maj(a, b, c));
+			auto temp1 = BitOp(ADD,h, Summation1(e));
+			auto temp2 = BitOp(ADD, temp1, Ch(e, f, g));
+			auto temp3 = BitOp(ADD, temp2, ConvertUnsignedLongLongToBinaryString(CONSTANTS[t]));
+			auto T1 = BitOp(ADD, temp3, W[t]);
+			auto T2 = BitOp(ADD, Summation0(a), Maj(a, b, c));
 
 			h = g;
 			g = f;
 			f = e;
-			e = Add(d, T1);
+			e = BitOp(ADD, d, T1);
 			d = c;
 			c = b;
 			b = a;
-			a = Add(T1, T2);
+			a = BitOp(ADD, T1, T2);
 		}
 
 		// Compute i'th intermediate hash value H[i]
-		H[0] = Add(a, H[0]);
-		H[1] = Add(b, H[1]);
-		H[2] = Add(c, H[2]);
-		H[3] = Add(d, H[3]);
-		H[4] = Add(e, H[4]);
-		H[5] = Add(f, H[5]);
-		H[6] = Add(g, H[6]);
-		H[7] = Add(h, H[7]);
+		H[0] = BitOp(ADD, a, H[0]);
+		H[1] = BitOp(ADD, b, H[1]);
+		H[2] = BitOp(ADD, c, H[2]);
+		H[3] = BitOp(ADD, d, H[3]);
+		H[4] = BitOp(ADD, e, H[4]);
+		H[5] = BitOp(ADD, f, H[5]);
+		H[6] = BitOp(ADD, g, H[6]);
+		H[7] = BitOp(ADD, h, H[7]);
 	}
 
 	string hash;
@@ -97,7 +80,7 @@ string GenerateHash(string message)
 	return hash;
 }
 
-string PadMessage(string message)
+vector<vector<string>> PadAndChunkMessage(string message)
 {
 	// l = message length
 	// k = number of zeroes to pad the message with
@@ -113,24 +96,21 @@ string PadMessage(string message)
 
 	k -= binary.length();
 
-	// add 1 to the message and then add k - 1 zeroes
+	// Add 1 to the message and then add k - 1 zeroes
 	message += "1";
 	for (auto i = 1; i < k; ++i)
 		message += "0";
 
 	message += binary;
-	return message;
-}
 
-vector<vector<string>> ChunkPaddedMessageIntoBlocks(string paddedMessage)
-{
+	// Chunk the message into m-bit blocks that is chunked into w-bit binary words
 	vector<vector<string>> blocks;
-	for (auto i = 0; i < paddedMessage.length() / ONE_THOUSAND_TWENTY_FOUR; i++)
+	for (auto i = 0; i < message.length() / ONE_THOUSAND_TWENTY_FOUR; i++)
 	{
 		int startIndex;
 
 		i == 0 ? startIndex = 0 : startIndex = i * ONE_THOUSAND_TWENTY_FOUR;
-		string block = paddedMessage.substr(startIndex, ONE_THOUSAND_TWENTY_FOUR);
+		string block = message.substr(startIndex, ONE_THOUSAND_TWENTY_FOUR);
 
 		vector<string> words;
 		for (auto j = 0; j < SIXTEEN; j++)
@@ -168,92 +148,92 @@ string ConvertBinaryStringToHexString(string toConvert)
 	return stream.str();
 }
 
+string BitOp(BitOpEnum bitOp, string x1, string x2, int n)
+{
+	auto longX1 = ConvertBinaryStringToUnsignedLongLong(x1);
+	auto longX2 = ConvertBinaryStringToUnsignedLongLong(x2);
+	unsigned long long result = 0;
+	switch (bitOp)
+	{
+	case SHR:
+	{
+		result = longX1 >> n;
+		break;
+	}
+	case SHL:
+	{
+		result = longX1 << n;
+		break;
+	}
+	case NOT:
+	{
+		result = ~longX1;
+		break;
+	}
+	case ADD:
+	{
+		result = longX1 + longX2;
+		break;
+	}
+	case AND:
+	{
+		result = longX1 & longX2;
+		break;
+	}
+	case XOR:
+	{
+		result = longX1 ^ longX2;
+		break;
+	}
+	}
+
+	return ConvertUnsignedLongLongToBinaryString(result);
+}
+
 // Algorithm functions
 string Ch(string x, string y, string z)
 {
-	auto xAndY = And(x, y);
-	auto notXAndZ = And(Comp(x), z);
-	return Xor(xAndY, notXAndZ);
+	auto xAndY = BitOp(AND, x, y);
+	auto notXAndZ = BitOp(AND, BitOp(NOT, x), z);
+	return BitOp(XOR, xAndY, notXAndZ);
 }
 
 string Maj(string x, string y, string z)
 {
-	auto xAndY = And(x, y);
-	auto xAndZ = And(x, z);
-	auto yAndZ = And(y, z);
-	auto xor1 = Xor(xAndY, xAndZ);
-	return Xor(xor1, yAndZ);
+	auto xAndY = BitOp(AND, x, y);
+	auto xAndZ = BitOp(AND, x, z);
+	auto yAndZ = BitOp(AND, y, z);
+	auto xor1 = BitOp(XOR, xAndY, xAndZ);
+	return BitOp(XOR, xor1, yAndZ);
 }
 
 string Sigma0(string x)
 {
-	auto xor1 = Xor(Rotr(x, 1), Rotr(x, 8));
-	return Xor(xor1, Shr(x, 7));
+	auto xor1 = BitOp(XOR, Rotr(x, 1), Rotr(x, 8));
+	return BitOp(XOR, xor1, BitOp(SHR, x, "", 7));
 }
 
 string Sigma1(string x)
 {
-	auto xor1 = Xor(Rotr(x, 19), Rotr(x, 61));
-	return Xor(xor1, Shr(x, 6));
+	auto xor1 = BitOp(XOR, Rotr(x, 19), Rotr(x, 61));
+	return BitOp(XOR, xor1, BitOp(SHR, x, "", 6));
 }
 
 string Summation0(string x)
 {
-	auto xor1 = Xor(Rotr(x, 28), Rotr(x, 34));
-	return Xor(xor1, Rotr(x, 39));
+	auto xor1 = BitOp(XOR, Rotr(x, 28), Rotr(x, 34));
+	return BitOp(XOR, xor1, Rotr(x, 39));
 }
 
 string Summation1(string x)
 {
-	auto xor1 = Xor(Rotr(x, 14), Rotr(x, 18));
-	return Xor(xor1, Rotr(x, 41));
-}
-
-string Shr(string x, int n)
-{
-	auto convertedX = ConvertBinaryStringToUnsignedLongLong(x);
-	auto shiftedX = convertedX >> n;
-	return ConvertUnsignedLongLongToBinaryString(shiftedX);
-}
-
-string Shl(string x, int n)
-{
-	auto convertedX = ConvertBinaryStringToUnsignedLongLong(x);
-	auto shiftedX = convertedX << n;
-	return ConvertUnsignedLongLongToBinaryString(shiftedX);
+	auto xor1 = BitOp(XOR,Rotr(x, 14), Rotr(x, 18));
+	return BitOp(XOR, xor1, Rotr(x, 41));
 }
 
 string Rotr(string x, int n)
 {
-	auto lhs = ConvertBinaryStringToUnsignedLongLong(Shr(x, n));
-	auto rhs = ConvertBinaryStringToUnsignedLongLong(Shl(x, SIXTY_FOUR - n));
+	auto lhs = ConvertBinaryStringToUnsignedLongLong(BitOp(SHR, x, "", n));
+	auto rhs = ConvertBinaryStringToUnsignedLongLong(BitOp(SHL, x, "", SIXTY_FOUR - n));
 	return ConvertUnsignedLongLongToBinaryString(lhs | rhs);
 }
-
-string Xor(string x1, string x2)
-{
-	auto lhs = ConvertBinaryStringToUnsignedLongLong(x1);
-	auto rhs = ConvertBinaryStringToUnsignedLongLong(x2);
-	return ConvertUnsignedLongLongToBinaryString(lhs ^ rhs);
-}
-
-string Comp(string x)
-{
-	auto longX = ConvertBinaryStringToUnsignedLongLong(x);
-	return ConvertUnsignedLongLongToBinaryString(~longX);
-}
-
-string Add(string x1, string x2)
-{
-	auto longX1 = ConvertBinaryStringToUnsignedLongLong(x1);
-	auto longX2 = ConvertBinaryStringToUnsignedLongLong(x2);
-	return ConvertUnsignedLongLongToBinaryString(longX1 + longX2);
-}
-
-string And(string x1, string x2)
-{
-	auto lhs = ConvertBinaryStringToUnsignedLongLong(x1);
-	auto rhs = ConvertBinaryStringToUnsignedLongLong(x2);
-	return ConvertUnsignedLongLongToBinaryString(lhs & rhs);
-}
-

@@ -14,7 +14,7 @@ using namespace std;
 int main()
 {
 	string fileName;
-	cout << "This program will generate an SHA-512 hash for a given file.\nType the name of a local file OR type the full directory path of a file (case sensitive, including extension):" << endl;
+	cout << "This program will generate an SHA-512 hash for a given file.\nType the name of a local file OR type the full directory path of a file (including extension):" << endl;
 	cin >> fileName;
 	cout << endl;
 
