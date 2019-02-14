@@ -11,20 +11,9 @@ using namespace std;
 
 string GenerateHash(string message)
 {
-	// Parameter descriptions
-	// m = number of bits in a message block = 1024 bits
-	// w = number of bits in a word = 64 bits
-	// M = padded message
-	// M[i] = message block i with a size of m bits
-	// M[i][j] = j'th word of the i'th message block
-	// W[t] = t'th w-bit word of the message schedule
-	// H[i] = i'th hash value with H[0] as the INITIAL_HASH value
-	// H[i][j] = j'th word of the i'th hash value
-	// K = 80 values in CONSTANTS
-
-	// Start hash algorithm
+	// Pad and convert message into 1024-bit blocks
 	auto M = PadAndChunkMessage(message);
-	auto K = CONSTANTS;
+	// Create vector to hold intermediate hash values for each iteration
 	vector<string> H;
 	for (auto i = 0; i < M.size(); i++)
 	{
@@ -59,7 +48,7 @@ string GenerateHash(string message)
 		{
 			auto temp1 = BitOp(ADD,h, Summation1(e));
 			auto temp2 = BitOp(ADD, temp1, Ch(e, f, g));
-			auto temp3 = BitOp(ADD, temp2, ConvertUnsignedLongLongToBinaryString(K[t]));
+			auto temp3 = BitOp(ADD, temp2, ConvertUnsignedLongLongToBinaryString(CONSTANTS[t]));
 			auto T1 = BitOp(ADD, temp3, W[t]);
 			auto T2 = BitOp(ADD, Summation0(a), Maj(a, b, c));
 
