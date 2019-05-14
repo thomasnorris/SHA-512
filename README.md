@@ -1,2 +1,2 @@
-# OneWayHash
-- This is an implementation of the SHA-512 hashing algorithm in C#.
+# SHA-512
+- Modify the `InputFile.txt` and a hash will be generated for it.
